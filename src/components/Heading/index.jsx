@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 const Heading = styled.h1`
-    margin-top: 0;
-    margin-bottom: 48px;
+	margin: 2rem;
     color: #202020;
-    font-size: 36px;
+    font-size: 2rem;
+    text-align: center;
 `
 
 export default Heading

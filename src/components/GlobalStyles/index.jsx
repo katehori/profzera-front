@@ -4,12 +4,17 @@ import { createGlobalStyle } from 'styled-components'
 const GlobalStyles = createGlobalStyle`
     * {
         box-sizing: border-box;
-        font-family: "Inter", sans-serif;
-    }
-    body {
+        color: #202020;
+        font-family: "Montserrat", sans-serif;
         margin: 0;
-        background-color: #FDF5FF;
+        padding: 0;
+    }
+
+    body {
+        min-height: 100vh;
+        padding-bottom: 8rem;
+        position: relative;
     }
 `
 
-export default GlobalStyles
+export default GlobalStyles;

@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
 const Fieldset = styled.fieldset`
+    border: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    border: none;
-    padding: 0;
+    padding: 4px 0;
 `
     
-export default Fieldset
+export default Fieldset;
