@@ -65,7 +65,7 @@ const ActionButtons = styled.div`
     align-items: center;
     display: flex;
     flex-shrink: 0;
-    gap: 10px;
+    gap: 1rem;
 `;
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ 

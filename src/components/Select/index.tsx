@@ -1,7 +1,6 @@
 import { Field } from 'formik';
 import styled from 'styled-components';
 
-
 const StyledSelect = styled(Field)`
     border-radius: 5px;
     border: 1px solid #ccc;

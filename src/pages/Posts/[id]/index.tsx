@@ -4,10 +4,10 @@ import { useAuth } from '../../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import { usePostDelete } from '../../../hooks/usePostDelete';
 import api from '../../../api'
 import Breadcrumb from '../../../components/Breadcrumb';
 import Button from '../../../components/Button';
-import GlobalStyles from '../../../components/GlobalStyles';
 import PostContainer from '../../../components/Post/Container';
 import styled from "styled-components";
 
@@ -43,6 +43,7 @@ const Content = styled.p`
 
 const PostView: React.FC = () => {
 	const navigate = useNavigate();
+
 	const { isAuthenticated } = useAuth();
 
 	const { id } = useParams<{ id: string }>();
@@ -54,12 +55,19 @@ const PostView: React.FC = () => {
 		navigate(`/posts/${id}/edit`);
 	};
 
-	const handleDeleteClick = () => {
-		// Lógica para excluir
-		console.log("Excluir item:", id);
-		if (window.confirm("Tem certeza que deseja excluir este item?")) {
-		// Aqui você faria a chamada API para excluir
+	const { deletePost, isDeleting } = usePostDelete({
+		onSuccess: () => {
+			navigate('/posts', { 
+				replace: true,
+				state: { message: 'Publicação excluída com sucesso!' }
+			});
 		}
+	});
+
+	const handleDeleteClick = async () => {
+		if (!id || !post) return;
+		
+		await deletePost(id, post.title);
 	};
 
 	const actionButtons = (
@@ -70,6 +78,7 @@ const PostView: React.FC = () => {
 						variant="primary"
 						icon={<FaEdit />}
 						onClick={handleEditClick}
+						disabled={isDeleting}
 					>
 						Editar
 					</Button>
@@ -77,8 +86,9 @@ const PostView: React.FC = () => {
 						variant="danger"
 						icon={<FaTrash />}
 						onClick={handleDeleteClick}
+						disabled={isDeleting}
 					>
-						Excluir
+						{isDeleting ? 'Excluindo...' : 'Excluir'}
 					</Button>
 				</>
 			)}
@@ -110,7 +120,7 @@ const PostView: React.FC = () => {
 		return date ? new Date(date).toLocaleString() : '';
 	};
 
-	if (loading) return <div>Carregando...</div>;
+	if (loading || isDeleting) return <div>Carregando...</div>;
 
 	if (error) return <div>{error}</div>;
 

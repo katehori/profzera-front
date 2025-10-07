@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup'
 import api from '../../../api';
+import Author from '../../../components/Author';
 import Breadcrumb from '../../../components/Breadcrumb';
 import Button from '../../../components/Button';
+import ButtonActions from '../../../components/Button/Actions';
 import ErrorText from '../../../components/ErrorText'
 import Fieldset from '../../../components/Fieldset';
-import GlobalStyles from '../../../components/GlobalStyles';
 import Heading from '../../../components/Heading';
 import Input from '../../../components/Input';
 import Label from '../../../components/Label';
@@ -18,18 +19,17 @@ import Textarea from '../../../components/Textarea';
 
 const validationSchema = Yup.object({
     title: Yup.string().required('Título é obrigatório'),
-    content: Yup.string().required('Conteúdo é obrigatório'),
-    username: Yup.string().required('Autor é obrigatório'),
+    content: Yup.string().required('Conteúdo é obrigatório')
 })
 
 const EditPost: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
+
 	const navigate = useNavigate();
-	
+
 	const [initialValues, setInitialValues] = useState<PostFormValues>({
 		title: '',
-		content: '',
-		username: ''
+		content: ''
 	});
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(true);
@@ -42,8 +42,7 @@ const EditPost: React.FC = () => {
 				.then(response => {
 					setInitialValues({
 						title: response.data.title || '',
-						content: response.data.content || '',
-						username: response.data.username || ''
+						content: response.data.content || ''
 					});
 				})
 				.catch(() => {
@@ -133,36 +132,24 @@ const EditPost: React.FC = () => {
 							/>
 						</Fieldset>
 
-						<Fieldset>
-							<Label htmlFor="username" required>
-								Autor
-							</Label>
-							<Input
-								id="username"
-								name="username"
-								placeholder="Insira o autor"
+						<Author />
+
+						<ButtonActions>
+							<Button
+								variant="primary"
+								onClick={() => navigate(-1)}
+							>
+								Cancelar
+							</Button>
+
+							<Button
+								type="submit"
+								variant="primary"
 								disabled={isSubmitting}
-							/>
-							<ErrorMessage
-								name="username"
-								component={ErrorText}
-							/>
-						</Fieldset>
-
-						<Button
-							variant="primary"
-							onClick={() => navigate(-1)}
-						>
-							Cancelar
-						</Button>
-
-						<Button
-							type="submit"
-							variant="primary"
-							disabled={isSubmitting}
-						>
-							{isSubmitting ? 'Editando...' : 'Editar'}
-						</Button>
+							>
+								{isSubmitting ? 'Editando...' : 'Editar'}
+							</Button>
+						</ButtonActions>
 					</PostForm>
 				)}
 			</Formik>

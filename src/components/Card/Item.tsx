@@ -1,8 +1,9 @@
 import { FaReadme, FaEdit, FaTrash } from 'react-icons/fa';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
-import Button from "../Button";
-import styled from "styled-components";
+import Button from '../Button';
+import ButtonActions from '../Button/Actions';
+import styled from 'styled-components';
 
 const Item = styled.div`
 	border-radius: 12px;
@@ -50,6 +51,8 @@ interface CardProps {
     content: string;
     username: string;
     createdAt?: Date | null;
+    onDelete?: (id: number | string) => void;
+	isDeleting?: boolean;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -57,9 +60,12 @@ const Card: React.FC<CardProps> = ({
 	username,
 	createdAt,
 	title,
-	content
+	content,
+    onDelete,
+	isDeleting
 }) => {
 	const navigate = useNavigate();
+
 	const { isAuthenticated } = useAuth();
 
 	const handleViewClick = () => {
@@ -71,10 +77,8 @@ const Card: React.FC<CardProps> = ({
 	};
 
 	const handleDeleteClick = () => {
-		// Lógica para excluir
-		console.log("Excluir item:", id);
-		if (window.confirm("Tem certeza que deseja excluir este item?")) {
-		// Aqui você faria a chamada API para excluir
+		if (onDelete) {
+			onDelete(id);
 		}
 	};
 
@@ -89,31 +93,35 @@ const Card: React.FC<CardProps> = ({
 			<Content>
 				{content}
 			</Content>
-			<Button
-				variant="primary"
-				icon={<FaReadme />}
-				onClick={handleViewClick}
-			>
-				Ver
-			</Button>
-			{isAuthenticated && (
-				<>
-					<Button
-						variant="primary"
-						icon={<FaEdit />}
-						onClick={handleEditClick}
-					>
-						Editar
-					</Button>
-					<Button
-						variant="danger"
-						icon={<FaTrash />}
-						onClick={handleDeleteClick}
-					>
-						Excluir
-					</Button>
-				</>
-			)}
+			<ButtonActions>
+				<Button
+					variant="primary"
+					icon={<FaReadme />}
+					onClick={handleViewClick}
+				>
+					Ver
+				</Button>
+				{isAuthenticated && (
+					<>
+						<Button
+							variant="primary"
+							icon={<FaEdit />}
+							onClick={handleEditClick}
+							disabled={isDeleting}
+						>
+							Editar
+						</Button>
+						<Button
+							variant="danger"
+							icon={<FaTrash />}
+							onClick={handleDeleteClick}
+							disabled={isDeleting}
+						>
+							Excluir
+						</Button>
+					</>
+				)}
+			</ButtonActions>
 		</Item>
 	);
 };

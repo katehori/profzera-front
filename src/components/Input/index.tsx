@@ -29,19 +29,23 @@ const StyledInput = styled(Field)`
 `
 
 interface InputProps {
+    children?: React.ReactNode;
+    disabled?: boolean;
     id: string;
     name: string;
-    type?: string;
     placeholder?: string;
-    disabled?: boolean;
+    type?: string;
+    value?: string;
 }
 
 const Input: React.FC<InputProps> = ({
+    children,
+    disabled = false,
     id,
     name,
-    type = "text",
     placeholder = "Insira",
-    disabled = false
+    type = "text",
+    value
 }) => {
     return (
         <StyledInput
@@ -50,7 +54,10 @@ const Input: React.FC<InputProps> = ({
             type={type}
             placeholder={placeholder}
             disabled={disabled}
-        />
+            value={value}
+        >
+            {children}
+        </StyledInput>
     );
 };
 

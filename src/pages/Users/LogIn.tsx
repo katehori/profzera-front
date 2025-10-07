@@ -34,7 +34,6 @@ function LogIn() {
 				navigate('/posts');
 			})
 			.catch((error) => {
-				console.error('Erro ao acessar a conta:', error);
 				alert('Erro ao acessar a conta. Verifique suas credenciais.');
 			});
 	};

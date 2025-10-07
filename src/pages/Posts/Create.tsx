@@ -1,10 +1,13 @@
 import { ErrorMessage, Formik } from 'formik';
 import { PostFormValues } from '../../reducers/types';
+import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup'
 import api from '../../api';
+import Author from '../../components/Author';
 import Breadcrumb from '../../components/Breadcrumb';
 import Button from '../../components/Button';
+import ButtonActions from '../../components/Button/Actions';
 import ErrorText from '../../components/ErrorText'
 import Fieldset from '../../components/Fieldset';
 import Heading from '../../components/Heading';
@@ -16,29 +19,34 @@ import Textarea from '../../components/Textarea';
 
 const validationSchema = Yup.object({
 	title: Yup.string().required('Título é obrigatório'),
-	content: Yup.string().required('Conteúdo é obrigatório'),
-	username: Yup.string().required('Autor é obrigatório'),
+	content: Yup.string().required('Conteúdo é obrigatório')
 })
 
 const CreatePost: React.FC = () => {
 	const navigate = useNavigate();
+	
+	const { user } = useAuth();
 
 	const initialValues = {
 		title: '',
-		content: '',
-		username: ''
+		content: ''
 	};
 
 	const handleSubmit = (values: PostFormValues, { resetForm }: { resetForm: () => void }) => {
-		api.post('/posts', values)
-		.then(() => {
-			alert('Publicação criada com sucesso');
-			resetForm();
-			navigate('/posts');
-		})
-		.catch(() => {
-			alert('Erro ao criar publicação');
-		});
+		const postData = {
+			...values,
+			userId: user?.id
+		};
+
+		api.post('/posts', postData)
+			.then(() => {
+				alert('Publicação criada com sucesso');
+				resetForm();
+				navigate('/posts');
+			})
+			.catch(() => {
+				alert('Erro ao criar publicação');
+			});
 	};
 
 	return (
@@ -64,67 +72,55 @@ const CreatePost: React.FC = () => {
 				{({ handleSubmit, isSubmitting }) => (
 					<PostForm onSubmit={handleSubmit}>
 						<Fieldset>
-						<Label htmlFor="title" required>
-							Título
-						</Label>
-						<Input
-							id="title"
-							name="title"
-							placeholder="Insira o título"
-							disabled={isSubmitting}
-						/>
-						<ErrorMessage
-							name="title"
-							component={ErrorText}
-						/>
+							<Label htmlFor="title" required>
+								Título
+							</Label>
+							<Input
+								id="title"
+								name="title"
+								placeholder="Insira o título"
+								disabled={isSubmitting}
+							/>
+							<ErrorMessage
+								name="title"
+								component={ErrorText}
+							/>
 						</Fieldset>
 
 						<Fieldset>
-						<Label htmlFor="content" required>
-							Conteúdo
-						</Label>
-						<Textarea
-							id="content"
-							name="content"
-							placeholder="Insira o conteúdo"
-							rows={5}
-							disabled={isSubmitting}
-						/>
-						<ErrorMessage
-							name="content"
-							component={ErrorText}
-						/>
+							<Label htmlFor="content" required>
+								Conteúdo
+							</Label>
+							<Textarea
+								id="content"
+								name="content"
+								placeholder="Insira o conteúdo"
+								rows={5}
+								disabled={isSubmitting}
+							/>
+							<ErrorMessage
+								name="content"
+								component={ErrorText}
+							/>
 						</Fieldset>
 
-						<Fieldset>
-						<Label htmlFor="username" required>
-							Autor
-						</Label>
-						<Input
-							id="username"
-							name="username"
-							placeholder="Insira o autor"
-							disabled={isSubmitting}
-						/>
-						<ErrorMessage
-							name="username"
-							component={ErrorText}
-						/>
-						</Fieldset>
+						<Author />
 
-						<Button
-							variant="primary"
-							onClick={() => navigate(-1)}
-						>
-							Cancelar
-						</Button>
-						<Button
-							type="submit"
-							variant="primary"
-							disabled={isSubmitting}
-						>
-							{isSubmitting ? 'Criando...' : 'Criar'}
-						</Button>
+						<ButtonActions>
+							<Button
+								variant="primary"
+								onClick={() => navigate(-1)}
+							>
+								Cancelar
+							</Button>
+							<Button
+								type="submit"
+								variant="primary"
+								disabled={isSubmitting}
+							>
+								{isSubmitting ? 'Criando...' : 'Criar'}
+							</Button>
+						</ButtonActions>
 					</PostForm>
 				)}
 				</Formik>

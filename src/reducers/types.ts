@@ -9,7 +9,6 @@ export interface Post {
 export interface PostFormValues {
     title: string;
     content: string;
-    username: string;
 }
 
 export interface LoginFormValues {

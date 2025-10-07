@@ -43,8 +43,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 				const userData = JSON.parse(savedUser);
 				setIsAuthenticated(true);
 				setUser(userData);
-			} catch (error) {
-				console.error('Erro ao recuperar dados do usuário:', error);
+			} catch {
+				alert('Erro ao recuperar dados do usuário.');
 				localStorage.removeItem('user');
 			}
 		}
