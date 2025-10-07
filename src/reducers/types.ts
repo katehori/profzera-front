@@ -19,7 +19,7 @@ export interface LoginFormValues {
 export interface RegisterFormValues {
     confirmPassword: string;
     password: string;
-    type: string;
+    type: number;
     username: string;
 }
 

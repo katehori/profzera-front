@@ -21,9 +21,7 @@ const userTypeOptions = [
 ];
 
 const validationSchema = Yup.object({
-	type: Yup.number()
-		.required('Tipo de usuário é obrigatório')
-    	.oneOf([0, 1, 2], 'Tipo de usuário inválido'),
+	type: Yup.number().min(0, 'Tipo de usuário é obrigatório'),
 	username: Yup.string().required('Nome de usuário é obrigatório'),
 	password: Yup.string()
 		.min(8, 'A senha deve possuir pelo menos 8 caracteres')
@@ -38,6 +36,7 @@ function Register() {
 
 	const createUser = (values: RegisterFormValues) => {
 		const { confirmPassword, ...userData } = values;
+		console.log(userData);
 
 		api.post('/users', userData)
 			.then(() => {
@@ -55,7 +54,7 @@ function Register() {
 				<Formik
 					onSubmit={createUser}
 					initialValues={{
-						type: '',
+						type: -1,
 						username: '',
 						password: '',
 						confirmPassword: ''

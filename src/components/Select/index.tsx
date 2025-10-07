@@ -1,4 +1,4 @@
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
 import styled from 'styled-components';
 
 const StyledSelect = styled(Field)`
@@ -23,7 +23,7 @@ const StyledSelect = styled(Field)`
 
 interface SelectOption {
     label: string;
-    value: number | string;
+    value: number;
 }
 
 interface SelectProps {
@@ -41,14 +41,19 @@ const Select: React.FC<SelectProps> = ({
     placeholder = "Selecione...",
     disabled = false
 }) => {
+    const { setFieldValue, values } = useFormikContext();
+
+    const value = values[name];
     return (
         <StyledSelect
             as="select"
             id={id}
             name={name}
             disabled={disabled}
+            onChange={e => setFieldValue(name, e.target.value)}
+            value={value}
         >
-            <option value="">{placeholder}</option>
+            <option value={-1} disabled hidden>{placeholder}</option>
             {options.map((option) => (
                 <option key={option.value} value={option.value}>
                     {option.label}
