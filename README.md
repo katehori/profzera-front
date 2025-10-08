@@ -96,7 +96,8 @@ profzera-front/
 
 - Node.js (versão 16 ou superior)
 - NPM (geralmente vem com o Node.js)
-- Backend rodando em `http://localhost:8080/api/` (conforme configurado em `src/api.ts`)
+
+Também necessário, backend rodando em `http://localhost:8080/api/` (conforme configurado em `src/api.ts`)
 
 ## 📦 Instalação
 
@@ -112,28 +113,11 @@ npm install
 
 ## 🎮 Como Rodar o Projeto
 
+O projeto estará disponível em: `http://localhost:5173/` (porta padrão do Vite)
+
 ### Modo Desenvolvimento
 ```bash
 npm run dev
-``` 
-
-O projeto estará disponível em: `http://localhost:5173/` (porta padrão do Vite)
-
-### Build para Produção
-```bash
-npm run build
-```
-
-Os arquivos otimizados serão gerados na pasta `dist/`
-
-### Preview da Build de Produção
-```bash
-npm run preview
-``` 
-
-### Linting
-```bash
-npm run lint
 ```
 
 ## 🌐 Rotas da Aplicação
@@ -179,9 +163,7 @@ O projeto é totalmente responsivo, com breakpoints para:
 ```json 
 {
   "dev": "vite", // Inicia servidor de desenvolvimento
-  "build": "vite build", // Gera build de produção
-  "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-  "preview": "vite preview" // Preview da build
+  "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
 }
 ``` 
 
