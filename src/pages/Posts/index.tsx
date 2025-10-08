@@ -27,7 +27,7 @@ const initialState: PostState = {
 const PostList: React.FC = () => {
 	const navigate = useNavigate();
 
-	const { isAuthenticated } = useAuth();
+	const { isAuthenticated, canCreateAndEdit } = useAuth();
 
 	const [state, dispatch] = useReducer(postReducer, initialState);
 
@@ -69,11 +69,10 @@ const PostList: React.FC = () => {
 		<>
       		<SearchInput onSearch={handleSearch} />
 
-			{isAuthenticated && (
+			{isAuthenticated && canCreateAndEdit() && (
 				<>
 					<Button 
 						variant="primary" 
-						size="small"
 						icon={<FaPlus />} 
 						onClick={handleCreateClick}
 					>
@@ -91,10 +90,7 @@ const PostList: React.FC = () => {
 	return (
 		<>
 			<PostContainer>
-				<Breadcrumb 
-					items={[]}
-					actionButtons={actionButtons}
-				/>
+				<Breadcrumb actionButtons={actionButtons} />
 
 				<Heading>
 					Todas as publicações

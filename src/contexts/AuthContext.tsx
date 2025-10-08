@@ -3,14 +3,19 @@ import React, { createContext, useState, ReactNode } from 'react';
 interface User {
 	id: number;
 	username: string;
-	type: string;
+	type: number;
 }
 
 interface AuthContextType {
+	canCreateAndEdit: () => boolean;
+	canDelete: () => boolean;
+	isAdmin: () => boolean;
 	isAuthenticated: boolean;
-	user: User | null;
+	isStudent: () => boolean;
+	isTeacher: () => boolean;
 	login: (userData: User) => void;
 	logout: () => void;
+	user: User | null;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,6 +40,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		localStorage.removeItem('user');
 	};
 
+	const isAdmin = () => user?.type === 0; // 0 = administrador
+	const isTeacher = () => user?.type === 1; // 1 = professor
+	const isStudent = () => user?.type === 2; // 2 = aluno
+	const canCreateAndEdit = () => isAdmin() || isTeacher();
+	const canDelete = () => isAdmin();
+
 	React.useEffect(() => {
 		const savedUser = localStorage.getItem('user');
 
@@ -51,7 +62,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	}, []);
 
   return (
-		<AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+		<AuthContext.Provider value={{ 
+			canCreateAndEdit,
+			canDelete,
+			isAdmin,
+			isAuthenticated, 
+			isStudent,
+			isTeacher, 
+			login, 
+			logout,
+			user
+		}}>
 			{children}
 		</AuthContext.Provider>
   );

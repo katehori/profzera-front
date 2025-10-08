@@ -1,8 +1,8 @@
 
 import { useAuth } from '../../hooks/useAuth';
-import Fieldset from '../../components/Fieldset';
-import Input from '../../components/Input';
-import Label from '../../components/Label';
+import Fieldset from '../Fieldset';
+import Input from '.';
+import Label from '../Label';
 
 
 const Author: React.FC = () => {

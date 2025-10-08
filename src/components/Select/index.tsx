@@ -2,11 +2,20 @@ import { Field, useFormikContext } from 'formik';
 import styled from 'styled-components';
 
 const StyledSelect = styled(Field)`
-    border-radius: 5px;
+    background-color: #fff;
+    border-radius: 8px;
     border: 1px solid #ccc;
-    padding: 8px;
-    transition: border-color 0.2s ease-in-out;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 1rem;
+    transition: all 0.2s ease-in-out;
     width: 100%;
+  
+    &:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        outline: none;
+    }
     
     &:disabled {
         background-color: #f8f9fa;
@@ -18,6 +27,25 @@ const StyledSelect = styled(Field)`
 
     &:hover:not(:disabled) {
         border-color: #999;
+    }
+
+    @media (max-width: 768px) {
+        border-radius: 6px;
+        font-size: 0.95rem;
+        padding: 0.875rem;
+    }
+    
+    @media (max-width: 480px) {
+        border-radius: 5px;
+        font-size: 16px; /* Previne zoom em iOS */
+        min-height: 48px;
+        padding: 0.75rem;
+    }
+    
+    @media (max-width: 320px) {
+        border-radius: 4px;
+        font-size: 14px;
+        padding: 0.625rem;
     }
 `;
 

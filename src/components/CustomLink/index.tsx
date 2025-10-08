@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledLink = styled(Link)`
-    text-decoration: none;
     border-bottom: 4px solid rgba(255, 222, 89, 0.4);
+    color: #202020;
+    text-decoration: none;
 
     &:hover {
         border-color: #ffde59;

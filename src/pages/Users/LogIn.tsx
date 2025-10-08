@@ -11,6 +11,7 @@ import Fieldset from '../../components/Fieldset';
 import Heading from '../../components/Heading';
 import Input from '../../components/Input';
 import Label from '../../components/Label';
+import AuthRedirect from '../../components/User/AuthRedirect';
 import UserContainer from '../../components/User/Container';
 import UserForm from '../../components/User/Form';
 
@@ -97,7 +98,9 @@ function LogIn() {
 								{isSubmitting ? 'Entrando...' : 'Entrar'}
 							</Button>
 
-							<div>Não tem uma conta? <CustomLink to="/register">Cadastre-se</CustomLink></div>
+							<AuthRedirect>
+								Não tem uma conta? <CustomLink to="/register">Cadastre-se</CustomLink>
+							</AuthRedirect>
 						</UserForm>
 					)}
 				</Formik>

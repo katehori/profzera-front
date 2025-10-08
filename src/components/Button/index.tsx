@@ -7,6 +7,7 @@ interface StyledButtonProps {
     $fullWidth?: boolean;
 }
 
+
 const StyledButton = styled.button<StyledButtonProps>`
     align-items: center;
     border-radius: 8px;
@@ -91,6 +92,20 @@ const StyledButton = styled.button<StyledButtonProps>`
         background-color: #6c757d;
         cursor: not-allowed;
         opacity: 0.65;
+    }
+`;
+
+interface ButtonGroupProps {
+    $fullWidth?: boolean;
+}
+
+export const ButtonGroup = styled.div<ButtonGroupProps>`
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    
+    & > ${StyledButton} {
+        flex: ${props => props.$fullWidth ? 1 : 'none'};
     }
 `;
 

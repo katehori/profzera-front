@@ -5,7 +5,7 @@ const StyledInput = styled(Field)`
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 1rem;
-    padding: 8px;
+    padding: 1rem;
     transition: all 0.2s ease-in-out;
     width: 100%;
   

@@ -1,4 +1,4 @@
-import { FaReadme, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Post } from '../../../reducers/types';
 import { useAuth } from '../../../hooks/useAuth';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { usePostDelete } from '../../../hooks/usePostDelete';
 import api from '../../../api'
 import Breadcrumb from '../../../components/Breadcrumb';
-import Button from '../../../components/Button';
+import Button, { ButtonGroup } from '../../../components/Button';
 import PostContainer from '../../../components/Post/Container';
 import styled from "styled-components";
 
@@ -44,7 +44,7 @@ const Content = styled.p`
 const PostView: React.FC = () => {
 	const navigate = useNavigate();
 
-	const { isAuthenticated } = useAuth();
+	const { isAuthenticated, canCreateAndEdit, canDelete } = useAuth();
 
 	const { id } = useParams<{ id: string }>();
 	const [post, setPost] = useState<Post | null>(null);
@@ -71,28 +71,28 @@ const PostView: React.FC = () => {
 	};
 
 	const actionButtons = (
-		<>
-			{isAuthenticated && (
-				<>
-					<Button
-						variant="primary"
-						icon={<FaEdit />}
-						onClick={handleEditClick}
-						disabled={isDeleting}
-					>
-						Editar
-					</Button>
-					<Button
-						variant="danger"
-						icon={<FaTrash />}
-						onClick={handleDeleteClick}
-						disabled={isDeleting}
-					>
-						{isDeleting ? 'Excluindo...' : 'Excluir'}
-					</Button>
-				</>
+		<ButtonGroup>
+			{isAuthenticated && canCreateAndEdit() && (
+				<Button
+					variant="primary"
+					icon={<FaEdit />}
+					onClick={handleEditClick}
+					disabled={isDeleting}
+				>
+					Editar
+				</Button>
 			)}
-		</>
+			{isAuthenticated && canDelete() && (
+				<Button
+					variant="danger"
+					icon={<FaTrash />}
+					onClick={handleDeleteClick}
+					disabled={isDeleting}
+				>
+					{isDeleting ? 'Excluindo...' : 'Excluir'}
+				</Button>
+			)}
+		</ButtonGroup>
 	);
 
 	useEffect(() => {

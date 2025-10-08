@@ -1,35 +1,78 @@
 import { FaReadme, FaEdit, FaTrash } from 'react-icons/fa';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
-import Button from '../Button';
-import ButtonActions from '../Button/Actions';
+import Button, { ButtonGroup } from '../Button';
 import styled from 'styled-components';
 
 const Item = styled.div`
-	border-radius: 12px;
 	border-color: rgba(0, 0, 0, 0.1);
+	border-radius: 12px;
+	padding: 1.5rem;
+    background: #fff;
     border-style: solid;
     border-width: 1px;
-	padding: 1.5rem;
+
+    @media (max-width: 768px) {
+        border-radius: 10px;
+        padding: 1.25rem;
+    }
+
+    @media (max-width: 480px) {
+        border-radius: 8px;
+        padding: 1rem;
+    }
+
+    @media (max-width: 320px) {
+        padding: 0.75rem;
+    }
 `
 
 const Info = styled.div`
 	font-size: 0.90rem;
 	margin-bottom: 12px;
+
+    @media (max-width: 480px) {
+        font-size: 0.85rem;
+        gap: 0.25rem;
+        margin-bottom: 10px;
+    }
 `
 
 const Author = styled.span`
   	font-weight: 600;
+    color: #333;
 `
 
 const CreatedAt = styled.span`
   	color: #999;
+    font-size: 0.85em;
+
+    @media (max-width: 480px) {
+        font-size: 0.8em;
+    }
 `
 
 const Title = styled.h3`
-	font-size: 1.25rem;
-	margin-bottom: 0.5rem;
-  	font-weight: 700;
+    color: #202020;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    @media (max-width: 768px) {
+        font-size: 1.15rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+    }
+
+    @media (max-width: 320px) {
+        font-size: 1rem;
+    }
 `
 
 const Content = styled.p`
@@ -39,10 +82,59 @@ const Content = styled.p`
     margin-bottom: 1rem;
 
 	/* Limita a 3 linhas com ellipsis */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
     overflow: hidden;
+
+	@media (max-width: 768px) {
+        -webkit-line-clamp: 3;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 480px) {
+        -webkit-line-clamp: 2;
+        font-size: 12px;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 320px) {
+        -webkit-line-clamp: 2;
+        font-size: 11px;
+    }
+`
+
+const StyledButtonGroup = styled(ButtonGroup)`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    @media (max-width: 480px) {
+        gap: 0.375rem;
+    }
+
+    @media (max-width: 320px) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+`
+
+const ButtonText = styled.span`
+    @media (max-width: 480px) {
+        display: none;
+    }
+`
+
+const IconWrapper = styled.span`
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    
+    @media (max-width: 480px) {
+        margin-right: 0;
+    }
 `
 
 interface CardProps {
@@ -66,7 +158,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
 	const navigate = useNavigate();
 
-	const { isAuthenticated } = useAuth();
+	const { isAuthenticated, canCreateAndEdit, canDelete } = useAuth();
 
 	const handleViewClick = () => {
 		navigate(`/posts/${id}`);
@@ -93,35 +185,36 @@ const Card: React.FC<CardProps> = ({
 			<Content>
 				{content}
 			</Content>
-			<ButtonActions>
+
+			<StyledButtonGroup>
 				<Button
 					variant="primary"
-					icon={<FaReadme />}
+					icon={<IconWrapper><FaReadme /></IconWrapper>}
 					onClick={handleViewClick}
 				>
-					Ver
+					<ButtonText>Ver</ButtonText>
 				</Button>
-				{isAuthenticated && (
-					<>
-						<Button
-							variant="primary"
-							icon={<FaEdit />}
-							onClick={handleEditClick}
-							disabled={isDeleting}
-						>
-							Editar
-						</Button>
-						<Button
-							variant="danger"
-							icon={<FaTrash />}
-							onClick={handleDeleteClick}
-							disabled={isDeleting}
-						>
-							Excluir
-						</Button>
-					</>
+				{isAuthenticated && canCreateAndEdit() && (
+					<Button
+						variant="primary"
+						icon={<IconWrapper><FaEdit /></IconWrapper>}
+						onClick={handleEditClick}
+						disabled={isDeleting}
+					>
+						<ButtonText>Editar</ButtonText>
+					</Button>
 				)}
-			</ButtonActions>
+				{isAuthenticated && canDelete() && (
+					<Button
+						variant="danger"
+						icon={<IconWrapper><FaTrash /></IconWrapper>}
+						onClick={handleDeleteClick}
+						disabled={isDeleting}
+					>
+						<ButtonText>Excluir</ButtonText>
+					</Button>
+				)}
+			</StyledButtonGroup>
 		</Item>
 	);
 };

@@ -11,6 +11,7 @@ import Heading from '../../components/Heading';
 import Input from '../../components/Input';
 import Label from '../../components/Label';
 import Select from '../../components/Select';
+import AuthRedirect from '../../components/User/AuthRedirect';
 import UserContainer from '../../components/User/Container';
 import UserForm from '../../components/User/Form';
 
@@ -142,7 +143,9 @@ function Register() {
 								{isSubmitting ? 'Cadastrando...' : 'Cadastrar'}
 							</Button>
 
-							<div>Já tem conta? <CustomLink to="/login">Entrar</CustomLink></div>
+							<AuthRedirect>
+								Já tem conta? <CustomLink to="/login">Entrar</CustomLink>
+							</AuthRedirect>
 						</UserForm>
           			)}
 				</Formik>

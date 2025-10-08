@@ -4,10 +4,9 @@ import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup'
 import api from '../../api';
-import Author from '../../components/Author';
+import Author from '../../components/Input/Author';
 import Breadcrumb from '../../components/Breadcrumb';
-import Button from '../../components/Button';
-import ButtonActions from '../../components/Button/Actions';
+import Button, { ButtonGroup } from '../../components/Button';
 import ErrorText from '../../components/ErrorText'
 import Fieldset from '../../components/Fieldset';
 import Heading from '../../components/Heading';
@@ -106,13 +105,14 @@ const CreatePost: React.FC = () => {
 
 						<Author />
 
-						<ButtonActions>
+						<ButtonGroup>
 							<Button
 								variant="primary"
 								onClick={() => navigate(-1)}
 							>
 								Cancelar
 							</Button>
+							
 							<Button
 								type="submit"
 								variant="primary"
@@ -120,7 +120,7 @@ const CreatePost: React.FC = () => {
 							>
 								{isSubmitting ? 'Criando...' : 'Criar'}
 							</Button>
-						</ButtonActions>
+						</ButtonGroup>
 					</PostForm>
 				)}
 				</Formik>
